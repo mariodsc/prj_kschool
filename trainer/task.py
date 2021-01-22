@@ -5,6 +5,7 @@ import argparse
 
 from tensorflow.keras import models, layers, activations, datasets
 from tensorflow.keras import optimizers, losses, metrics
+from tensorflow.keras.utils import to_categorical
 
 def _download_data():
     train, test = datasets.mnist.load_data()
@@ -12,11 +13,20 @@ def _download_data():
     x_test, y_test = test
     return x_train, y_train, x_test, y_test
 
+
+def _preprocess_data(x, y):
+    x = x / 255.0
+    y = to_categorical(y)
+    return x,y
+
+
 def train_and_evaluate(batch_size, epochs, job_dir, output_path):
     # Donwload the data
     x_train, y_train, x_test, y_test = _download_data()
 
     # Preprocess the data
+    x_train, y_train = _preprocess_data(x_train, y_train)
+    x_test, y_test = _preprocess_data(x_test, y_test)
 
     # Build the model
 
