@@ -38,12 +38,19 @@ def train_and_evaluate(batch_size, epochs, job_dir, output_path):
     x_test, y_test = _preprocess_data(x_test, y_test)
 
     # Build the model
-    m = _build_model()
-    
+    model = _build_model()
+    model.compile(loss=losses.categorical_crossentropy
+          , optimizer=optimizers.Adam()
+          , metrics=[metrics.categorical_accuracy])
+
     # Train the model
+    model.fit(x_train, y_train
+        , batch_size=1024
+        , epochs=30
+        , validation_split=0.15)
 
     # Evaluate the model
-
+    model.evaluate(x_test, y_test)
     pass
 
 def main():
