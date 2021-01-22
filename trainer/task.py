@@ -3,7 +3,27 @@
 import logging.config
 import argparse
 
+from tensorflow.keras import models, layers, activations, datasets
+from tensorflow.keras import optimizers, losses, metrics
+
+def _download_data():
+    train, test = datasets.mnist.load_data()
+    x_train, y_train = train
+    x_test, y_test = test
+    return x_train, y_train, x_test, y_test
+
 def train_and_evaluate(batch_size, epochs, job_dir, output_path):
+    # Donwload the data
+    x_train, y_train, x_test, y_test = _download_data()
+
+    # Preprocess the data
+
+    # Build the model
+
+    # Train the model
+
+    # Evaluate the model
+
     pass
 
 def main():
@@ -15,7 +35,7 @@ def main():
     parser.add_argument('--model-ouput-path', help='Path to write the SaveModel format')
 
     args = parser.parse_args()
-    
+
     batch_size = args.batch_size
     epochs = args.epochs
     job_dir = args.job_dir
