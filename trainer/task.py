@@ -10,8 +10,12 @@ from tensorflow.keras import optimizers, losses, metrics
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras import callbacks
 
+#version de git de nuestro código 
+# python3 setup.py version
+from . import __version__
 
 LOGGER = logging.getLogger()
+VERSION = __version__
 
 def _download_data():
     LOGGER.info('Donwload data')
@@ -67,6 +71,9 @@ def train_and_evaluate(batch_size, epochs, job_dir, output_path):
     #print(accuracy) -- se puede hacer pero mejor logger
     LOGGER.info(f" **** LOSS VALUE:{loss_value}, ACCURACY:{round(accuracy,4)}")
     
+    # Save model in TF scikit - pickle in tensorflow save model
+    model_dir = os.path.join(output_bath, VERSION)
+    models.save_model(model, model_dir)
 
 def main():
     """Entry point for your module."""
