@@ -2,10 +2,14 @@
 
 import logging.config
 import argparse
+import os
+import time
 
 from tensorflow.keras import models, layers, activations, datasets
 from tensorflow.keras import optimizers, losses, metrics
 from tensorflow.keras.utils import to_categorical
+from tensorflow.keras import callbacks
+
 
 LOGGER = logging.getLogger()
 
@@ -49,9 +53,13 @@ def train_and_evaluate(batch_size, epochs, job_dir, output_path):
           , metrics=[metrics.categorical_accuracy])
 
     # Train the model
+    logdir = os.path.join(job_dir, "logs/scalars/" + time.strftime("%Y%m%d-%H%M%S"))
+    tb_callback = callbacks.TensorBoard(log_dir=logdir)
+
     model.fit(x_train, y_train
         , batch_size=batch_size
-        , epochs=epochs)
+        , epochs=epochs
+        , callbacks=[tb_callback])
       #  , validation_split=0.15) no se utiliza
 
     # Evaluate the model
@@ -66,7 +74,7 @@ def main():
     parser.add_argument('--batch-size', type=int, help='Batch size for the training')
     parser.add_argument('--epochs', type=int, help='Batch size for the training')
     parser.add_argument('--job-dir', default=None, required=False, help='Option for AI platform')
-    parser.add_argument('--model-ouput-path', help='Path to write the SaveModel format')
+    parser.add_argument('--model-output-path', help='Path to write the SaveModel format')
 
     args = parser.parse_args()
 
@@ -76,7 +84,6 @@ def main():
     output_path = args.model_output_path
 
     train_and_evaluate(batch_size, epochs, job_dir, output_path)
-
 
 
 if __name__ == "__main__":

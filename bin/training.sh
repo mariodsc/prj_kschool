@@ -5,7 +5,7 @@
 EPOCHS=30
 BATCH_SIZE=1024
 
-gcloud ai-platform jobs submit training mnist_iht_`date +"%s"` \
+gcloud ai-platform jobs submit training mnist_mdesousac_`date +"%s"` \
   --python-version 3.7 \
   --runtime-version 2.3 \
   --scale-tier BASIC \
