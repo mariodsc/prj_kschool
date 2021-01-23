@@ -72,7 +72,7 @@ def train_and_evaluate(batch_size, epochs, job_dir, output_path):
     LOGGER.info(f" **** LOSS VALUE:{loss_value}, ACCURACY:{round(accuracy,4)}")
     
     # Save model in TF scikit - pickle in tensorflow save model
-    model_dir = os.path.join(output_bath, VERSION)
+    model_dir = os.path.join(output_path, VERSION)
     models.save_model(model, model_dir)
 
 def main():
