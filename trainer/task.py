@@ -7,7 +7,10 @@ from tensorflow.keras import models, layers, activations, datasets
 from tensorflow.keras import optimizers, losses, metrics
 from tensorflow.keras.utils import to_categorical
 
+LOGGER = logging.getLogger()
+
 def _download_data():
+    LOGGER.info('Donwload data')
     train, test = datasets.mnist.load_data()
     x_train, y_train = train
     x_test, y_test = test
@@ -15,11 +18,13 @@ def _download_data():
 
 
 def _preprocess_data(x, y):
+    LOGGER.info('Prepro')
     x = x / 255.0
     y = to_categorical(y)
     return x,y
 
 def _build_model():
+    LOGGER.info('Build model')
     m = models.Sequential()
     m.add(layers.Input((28,28), name='my_input_layer'))
     m.add(layers.Flatten())
@@ -45,13 +50,15 @@ def train_and_evaluate(batch_size, epochs, job_dir, output_path):
 
     # Train the model
     model.fit(x_train, y_train
-        , batch_size=1024
-        , epochs=30
-        , validation_split=0.15)
+        , batch_size=batch_size
+        , epochs=epochs)
+      #  , validation_split=0.15) no se utiliza
 
     # Evaluate the model
-    model.evaluate(x_test, y_test)
-    pass
+    loss_value, accuracy = model.evaluate(x_test, y_test)
+    #print(accuracy) -- se puede hacer pero mejor logger
+    LOGGER.info(f" **** LOSS VALUE:{loss_value}, ACCURACY:{round(accuracy,4)}")
+    
 
 def main():
     """Entry point for your module."""
